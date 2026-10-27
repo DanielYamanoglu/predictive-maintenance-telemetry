@@ -1,0 +1,46 @@
+{
+  "horizon_hours": 4.0,
+  "anomaly_detector": {
+    "train_rows": 6423,
+    "alarm_threshold": 0.5773,
+    "auc_vs_injected_faults_life<0.6": 0.8494,
+    "fault_episodes_test": 6,
+    "fault_episodes_detected": 4,
+    "false_alarm_rate_healthy_phase": 0.0247,
+    "alarm_rate_last_10pct_of_life": 0.9871
+  },
+  "failure_classifier": {
+    "train_machines": 12,
+    "test_machines": [
+      "motor-01",
+      "motor-07",
+      "pump-04",
+      "pump-08"
+    ],
+    "test_rows": 8494,
+    "test_positive_rate": 0.113,
+    "threshold_from_train_oof": 0.0692,
+    "train_oof_roc_auc": 0.9966,
+    "test_roc_auc": 0.9893,
+    "test_pr_auc": 0.9011,
+    "test_precision": 0.579,
+    "test_recall": 1.0,
+    "test_f1": 0.7334,
+    "test_confusion_matrix_[[tn,fp],[fn,tp]]": [
+      [
+        6836,
+        698
+      ],
+      [
+        0,
+        960
+      ]
+    ],
+    "first_sustained_alert_hours_before_failure": {
+      "motor-01": 9.02,
+      "motor-07": 7.95,
+      "pump-04": 4.49,
+      "pump-08": 6.02
+    }
+  }
+}

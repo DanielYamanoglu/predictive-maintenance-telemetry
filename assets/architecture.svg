@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 360" width="1000" height="360" role="img" aria-labelledby="t d">
+  <title id="t">Architecture: Modbus and MQTT into ingestion, features, models</title>
+  <desc id="d">A simulated plant is exposed over Modbus TCP and MQTT. Ingestion decodes, validates, resamples and stores Parquet. Features are computed over rolling windows. Models detect anomalies and predict failure within N hours.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#475569"/>
+    </marker>
+    <style>
+      text{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;fill:#0f172a}
+      .h{font-size:15px;font-weight:700}
+      .s{font-size:12px;fill:#334155}
+      .k{font-size:11px;font-weight:700;fill:#64748b;letter-spacing:.08em}
+      .box{fill:#ffffff;stroke:#94a3b8;stroke-width:1.5}
+      .src{fill:#e0f2fe;stroke:#0284c7;stroke-width:1.5}
+      .out{fill:#dcfce7;stroke:#16a34a;stroke-width:1.5}
+      .ln{stroke:#475569;stroke-width:1.6;fill:none}
+    </style>
+  </defs>
+  <rect width="1000" height="360" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+
+  <text class="k" x="30" y="38">SOURCES</text>
+  <text class="k" x="285" y="38">INGESTION</text>
+  <text class="k" x="545" y="38">FEATURES</text>
+  <text class="k" x="760" y="38">MODELS</text>
+
+  <rect class="src" x="30" y="54" width="215" height="110" rx="8"/>
+  <text class="h" x="46" y="82">Modbus TCP</text>
+  <text class="s" x="46" y="104">PLC-style holding registers</text>
+  <text class="s" x="46" y="122">scaled uint16, 0xFFFF = invalid</text>
+  <text class="s" x="46" y="140">polled (pymodbus)</text>
+
+  <rect class="src" x="30" y="190" width="215" height="110" rx="8"/>
+  <text class="h" x="46" y="218">MQTT</text>
+  <text class="s" x="46" y="240">plant/&lt;line&gt;/&lt;machine&gt;/telemetry</text>
+  <text class="s" x="46" y="258">JSON per message</text>
+  <text class="s" x="46" y="276">subscribed (paho-mqtt)</text>
+
+  <rect class="box" x="285" y="54" width="220" height="246" rx="8"/>
+  <text class="h" x="301" y="82">ingestion/</text>
+  <text class="s" x="301" y="108">1. decode and scale registers</text>
+  <text class="s" x="301" y="128">2. Pydantic validation</text>
+  <text class="s" x="301" y="148">3. null out-of-range fields,</text>
+  <text class="s" x="301" y="164">    reject malformed records</text>
+  <text class="s" x="301" y="184">4. quality counters</text>
+  <text class="s" x="301" y="204">5. Parquet (raw rate)</text>
+  <text class="s" x="301" y="224">6. resample to 1 min,</text>
+  <text class="s" x="301" y="240">    bounded gap fill</text>
+  <text class="s" x="301" y="280" style="font-size:11px">offline mode: same code, no network</text>
+
+  <rect class="box" x="545" y="54" width="170" height="246" rx="8"/>
+  <text class="h" x="561" y="82">features/</text>
+  <text class="s" x="561" y="108">32-min rolling window:</text>
+  <text class="s" x="561" y="130">mean, std, RMS,</text>
+  <text class="s" x="561" y="148">kurtosis, slope</text>
+  <text class="s" x="561" y="176">FFT band energy of</text>
+  <text class="s" x="561" y="194">vibration (low / mid / high)</text>
+  <text class="s" x="561" y="230">29 features per minute</text>
+
+  <rect class="box" x="760" y="54" width="210" height="118" rx="8"/>
+  <text class="h" x="776" y="82">models/</text>
+  <text class="s" x="776" y="106">IsolationForest</text>
+  <text class="s" x="776" y="124">anomaly detection</text>
+  <text class="s" x="776" y="146">gradient boosting:</text>
+  <text class="s" x="776" y="162">failure within N hours</text>
+
+  <rect class="out" x="760" y="190" width="210" height="110" rx="8"/>
+  <text class="h" x="776" y="218">reports/</text>
+  <text class="s" x="776" y="240">metrics.json</text>
+  <text class="s" x="776" y="258">figures/*.png</text>
+  <text class="s" x="776" y="276">held-out machines only</text>
+
+  <path class="ln" d="M245 109 H265 V140 H283" marker-end="url(#a)"/>
+  <path class="ln" d="M245 245 H265 V214 H283" marker-end="url(#a)"/>
+  <path class="ln" d="M505 177 H543" marker-end="url(#a)"/>
+  <path class="ln" d="M715 113 H758" marker-end="url(#a)"/>
+  <path class="ln" d="M865 172 V188" marker-end="url(#a)"/>
+  <text class="s" x="30" y="332">Source of all data: seeded plant simulator (16 pumps and motors, gradual wear, injected faults and glitches).</text>
+</svg>

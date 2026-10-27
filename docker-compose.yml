@@ -1,0 +1,25 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    volumes:
+      - ./docker/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    ports:
+      - "1883:1883"
+
+  simulator:
+    build: .
+    # 60x accelerated: one 10 s plant step every ~0.17 s; Modbus on 5020, MQTT to the broker
+    command: python -m simulator serve --modbus-port 5020 --mqtt-host mosquitto --speed 60
+    depends_on:
+      - mosquitto
+    ports:
+      - "5020:5020"
+
+  ingestion:
+    build: .
+    # Modbus poller and MQTT subscriber, buffered Parquet parts under ./data/live
+    command: python -m ingestion --out /data live --modbus-host simulator --mqtt-host mosquitto --flush-every 30
+    depends_on:
+      - simulator
+    volumes:
+      - ./data:/data
