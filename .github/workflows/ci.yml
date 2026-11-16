@@ -13,7 +13,6 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-      - run: uv venv
       - run: uv pip install -r requirements.txt pytest
 
-      - run: uv run --no-project python -m pytest -q
+      - run: .venv/bin/python -m pytest -q
