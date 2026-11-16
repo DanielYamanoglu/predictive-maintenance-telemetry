@@ -6,7 +6,7 @@ Reference implementation of a predictive-maintenance data pipeline: Modbus and M
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 ![Protocols](https://img.shields.io/badge/protocols-Modbus%20TCP%20%7C%20MQTT-0284c7)
 ![Models](https://img.shields.io/badge/models-IsolationForest%20%7C%20GradientBoosting-orange)
-![Tests](https://img.shields.io/badge/tests-17%20passing-brightgreen)
+[![CI](https://github.com/DanielYamanoglu/predictive-maintenance-telemetry/actions/workflows/ci.yml/badge.svg)](https://github.com/DanielYamanoglu/predictive-maintenance-telemetry/actions/workflows/ci.yml)
 ![Data](https://img.shields.io/badge/data-simulated-lightgrey)
 
 > **All data in this repository is simulated.** No real plant, machine or customer data is included, and the reported metrics describe how the pipeline behaves on synthetic data, not on a real production line. The point of the repo is the pipeline engineering (protocol handling, validation, resampling, windowed features, grouped evaluation), not the headline numbers.
@@ -127,7 +127,7 @@ docker-compose.yml        Mosquitto + simulator + ingestion
 - Detect stuck sensors (flat-line detection); the simulator injects them but the pipeline does not yet flag them.
 - Write to TimescaleDB instead of local Parquet, with backfill and exactly-once handling for late or duplicated MQTT messages.
 - Calibrate probabilities and estimate remaining useful life rather than a single binary horizon; add more machines and noisier, non-monotonic degradation so the evaluation is less optimistic.
-- Add a CI workflow and run the Docker stack in CI.
+- Run the Docker stack in CI.
 
 ## License
 
