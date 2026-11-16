@@ -61,7 +61,7 @@ Requires [uv](https://docs.astral.sh/uv/) and Python 3.12. No Docker, broker or 
 ```bash
 uv venv --python 3.12 .venv && uv pip install -r requirements.txt
 
-make demo     # simulate -> offline ingest -> features -> train -> figures (about 1 minute)
+make demo     # simulate -> offline ingest -> features -> train -> figures (1 to 2 minutes)
 make test     # 17 pytest tests, no network
 ```
 
